@@ -3,7 +3,6 @@
 ## **Project Overview**
 Citronix is a management application designed for lemon farms. It enables farmers to track their production, harvests, and sales while optimizing tree productivity based on their age.
 
----
 
 ## **Technologies**
 - **Backend**: Spring Boot (RESTful APIs, JPA for data management, Hibernate for ORM).
@@ -11,7 +10,6 @@ Citronix is a management application designed for lemon farms. It enables farmer
 - **Testing**: JUnit, Mockito
 - **Others**: Docker, Swagger (API documentation).
 
----
 
 ## **Setup Instructions**
 
@@ -28,5 +26,3 @@ Citronix is a management application designed for lemon farms. It enables farmer
 
 ### **Database**
 - Configure the database connection in the backend `application.yml` file.
-
----
