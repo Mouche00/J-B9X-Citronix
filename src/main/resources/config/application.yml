@@ -19,3 +19,4 @@ spring:
         show_sql: true
 server:
   port: 8080
+debug: true

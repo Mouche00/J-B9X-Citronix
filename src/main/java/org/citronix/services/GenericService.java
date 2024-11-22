@@ -1,5 +1,6 @@
 package org.citronix.services;
 
+import jakarta.transaction.Transactional;
 import org.citronix.exceptions.custom.EntityNotFound;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,23 +13,23 @@ public interface GenericService<T, REQ, RES> {
     JpaRepository<T, UUID> getRepository();
     GenericMapper<T, REQ, RES> getMapper();
 
-    default RES save(REQ farm) {
+    default RES save(REQ entity) {
         return getMapper().toDTO(
                 getRepository().save(
-                        getMapper().toEntity(farm)));
+                        getMapper().toEntity(entity)));
     }
 
-    default List<RES> saveAll(List<REQ> farms) {
+    default List<RES> saveAll(List<REQ> entities) {
         return getMapper().toDTOs(
                 getRepository().saveAll(
-                        getMapper().toEntities(farms)));
+                        getMapper().toEntities(entities)));
     }
 
-    default RES update(String id, REQ farm) {
-        T entity = findEntityById(id);
-        getMapper().updateEntityFromDto(farm, entity);
+    default RES update(String id, REQ entity) {
+        T foundEntity = findEntityById(id);
+        getMapper().updateEntityFromDto(entity, foundEntity);
         return getMapper().toDTO(
-                getRepository().save(entity));
+                getRepository().save(foundEntity));
     }
     default void delete(String id) {
         T entity = findEntityById(id);
