@@ -9,7 +9,6 @@ import org.citronix.utils.enums.Season;
 import java.time.Year;
 import java.util.Set;
 
-@Builder
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor

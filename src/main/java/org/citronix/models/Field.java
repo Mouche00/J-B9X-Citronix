@@ -8,7 +8,6 @@ import lombok.*;
 import java.util.Set;
 import java.util.UUID;
 
-@Builder
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
