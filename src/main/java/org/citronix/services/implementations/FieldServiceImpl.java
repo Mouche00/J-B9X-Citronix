@@ -18,16 +18,16 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FieldServiceImpl implements FieldService {
-    private final FieldRepository farmRepository;
-    private final FieldMapper fieldMapper;
+    private final FieldRepository repository;
+    private final FieldMapper mapper;
 
     @Override
     public JpaRepository<Field, UUID> getRepository() {
-        return farmRepository;
+        return repository;
     }
 
     @Override
     public GenericMapper<Field, FieldRequestDTO, FieldResponseDTO> getMapper() {
-        return fieldMapper;
+        return mapper;
     }
 }
