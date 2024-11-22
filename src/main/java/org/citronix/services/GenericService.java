@@ -5,6 +5,7 @@ import org.citronix.exceptions.custom.EntityNotFound;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,6 +47,10 @@ public interface GenericService<T, REQ, RES> {
     }
 
     default List<RES> findAll() {
-        return getMapper().toDTOs(getRepository().findAll());
+        List<T> entities = getRepository().findAll();
+        if(!entities.isEmpty()) {
+            return getMapper().toDTOs(getRepository().findAll());
+        }
+        return Collections.emptyList();
     }
 }

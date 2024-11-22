@@ -7,5 +7,5 @@ import org.citronix.utils.validation.OnCreate;
 
 @Builder
 public record FieldRequestDTO(@DecimalMin(value = "0.1") double surfaceArea,
-                              String farmId) {
+                              @NotBlank(groups = OnCreate.class) String farmId) {
 }

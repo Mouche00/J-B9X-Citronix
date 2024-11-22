@@ -17,16 +17,16 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FarmServiceImpl implements FarmService {
-    private final FarmRepository farmRepository;
-    private final FarmMapper farmMapper;
+    private final FarmRepository repository;
+    private final FarmMapper mapper;
 
     @Override
     public JpaRepository<Farm, UUID> getRepository() {
-        return farmRepository;
+        return repository;
     }
 
     @Override
     public GenericMapper<Farm, FarmRequestDTO, FarmResponseDTO> getMapper() {
-        return farmMapper;
+        return mapper;
     }
 }
