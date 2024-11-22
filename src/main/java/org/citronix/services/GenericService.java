@@ -15,6 +15,8 @@ public interface GenericService<T, REQ, RES> {
     GenericMapper<T, REQ, RES> getMapper();
 
     default RES save(REQ entity) {
+        System.out.println(getRepository().save(
+                getMapper().toEntity(entity)));
         return getMapper().toDTO(
                 getRepository().save(
                         getMapper().toEntity(entity)));
@@ -48,6 +50,7 @@ public interface GenericService<T, REQ, RES> {
 
     default List<RES> findAll() {
         List<T> entities = getRepository().findAll();
+        System.out.println(entities);
         if(!entities.isEmpty()) {
             return getMapper().toDTOs(getRepository().findAll());
         }

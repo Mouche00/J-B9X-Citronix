@@ -1,0 +1,12 @@
+package org.citronix.repositories;
+
+import org.citronix.models.Harvest;
+import org.citronix.models.Tree;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface TreeRepository extends JpaRepository<Tree, UUID> {
+}

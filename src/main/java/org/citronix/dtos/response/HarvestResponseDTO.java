@@ -13,5 +13,5 @@ import java.time.Year;
 public record HarvestResponseDTO(String id,
                                  Season season,
                                  Year year,
-                                 String fieldId) {
+                                 FieldResponseDTO field) {
 }
