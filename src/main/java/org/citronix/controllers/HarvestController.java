@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/harvests")
 public class HarvestController extends GenericController<Harvest, HarvestRequestDTO, HarvestResponseDTO> {
+    private final HarvestService service;
 
-    protected HarvestController(HarvestService service) {
+    protected HarvestController(HarvestService service, HarvestService harvestService) {
         super(service);
+        this.service = harvestService;
     }
+
 }

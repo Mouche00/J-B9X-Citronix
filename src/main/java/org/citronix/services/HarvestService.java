@@ -5,4 +5,5 @@ import org.citronix.dtos.response.HarvestResponseDTO;
 import org.citronix.models.Harvest;
 
 public interface HarvestService extends GenericService<Harvest, HarvestRequestDTO, HarvestResponseDTO> {
+    void startHarvest(String id);
 }
