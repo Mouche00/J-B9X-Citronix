@@ -2,13 +2,11 @@ package org.citronix.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.citronix.models.Tree;
 import org.citronix.services.GenericService;
 import org.citronix.utils.StringUtil;
 import org.citronix.utils.response.ApiResponse;
 import org.citronix.utils.response.ResponseUtil;
-import org.citronix.utils.validation.OnCreate;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.citronix.utils.validation.groups.OnCreate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

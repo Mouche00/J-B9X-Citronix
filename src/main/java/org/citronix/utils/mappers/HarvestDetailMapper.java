@@ -14,6 +14,4 @@ public interface HarvestDetailMapper extends GenericMapper<HarvestDetail, Harves
             @Mapping(source = "harvestId", target = "harvest.id")
     })
     HarvestDetail toEntity(HarvestDetailRequestDTO req);
-
-    HarvestDetailResponseDTO toDTO(HarvestDetail entity);
 }

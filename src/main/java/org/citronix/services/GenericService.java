@@ -1,7 +1,9 @@
 package org.citronix.services;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.citronix.exceptions.custom.EntityNotFound;
+import org.citronix.exceptions.custom.ListIsEmpty;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,14 +11,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 public interface GenericService<T, REQ, RES> {
     JpaRepository<T, UUID> getRepository();
     GenericMapper<T, REQ, RES> getMapper();
 
     default RES save(REQ entity) {
-        System.out.println(getRepository().save(
-                getMapper().toEntity(entity)));
         return getMapper().toDTO(
                 getRepository().save(
                         getMapper().toEntity(entity)));
@@ -34,6 +35,7 @@ public interface GenericService<T, REQ, RES> {
         return getMapper().toDTO(
                 getRepository().save(foundEntity));
     }
+
     default void delete(String id) {
         T entity = findEntityById(id);
         getRepository().delete(entity);
@@ -50,10 +52,14 @@ public interface GenericService<T, REQ, RES> {
 
     default List<RES> findAll() {
         List<T> entities = getRepository().findAll();
-        System.out.println(entities);
-        if(!entities.isEmpty()) {
-            return getMapper().toDTOs(getRepository().findAll());
+        if(entities.isEmpty()) {
+            throw new ListIsEmpty("entitie");
         }
-        return Collections.emptyList();
+        return getMapper().toDTOs(getRepository().findAll());
+    }
+
+    default <R> R executeWithUUID(String id, Function<UUID, R> function) {
+        UUID uuid = UUID.fromString(id);
+        return function.apply(uuid);
     }
 }

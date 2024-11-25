@@ -7,5 +7,6 @@ import org.citronix.models.Tree;
 import java.util.List;
 
 public interface TreeService extends GenericService<Tree, TreeRequestDTO, TreeResponseDTO> {
-    List<TreeResponseDTO> findAllByFieldId(String id);
+    List<TreeResponseDTO> findAllByFieldId(String fieldId);
+    List<Tree> findAllEntitiesByFieldHarvestId(String harvestId);
 }
