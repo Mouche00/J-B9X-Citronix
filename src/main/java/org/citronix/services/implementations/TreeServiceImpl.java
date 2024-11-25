@@ -26,20 +26,16 @@ import static org.citronix.repositories.TreeRepository.Specs.byFieldHarvestId;
 @Slf4j
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class TreeServiceImpl implements TreeService {
+public class TreeServiceImpl extends GenericServiceImpl<Tree, TreeRequestDTO, TreeResponseDTO> implements TreeService {
     private final TreeRepository repository;
     private final TreeMapper mapper;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Override
-    public JpaRepository<Tree, UUID> getRepository() {
-        return repository;
-    }
-
-    @Override
-    public GenericMapper<Tree, TreeRequestDTO, TreeResponseDTO> getMapper() {
-        return mapper;
+    public TreeServiceImpl(TreeRepository repository, TreeMapper mapper, ApplicationEventPublisher eventPublisher) {
+        super(repository, mapper);
+        this.repository = repository;
+        this.mapper = mapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override

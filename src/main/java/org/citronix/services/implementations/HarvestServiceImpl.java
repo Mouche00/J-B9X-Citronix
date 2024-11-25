@@ -25,20 +25,16 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class HarvestServiceImpl implements HarvestService {
+public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestRequestDTO, HarvestResponseDTO> implements HarvestService {
     private final HarvestRepository repository;
     private final HarvestMapper mapper;
     private final ApplicationEventPublisher eventPublisher;
 
-    @Override
-    public JpaRepository<Harvest, UUID> getRepository() {
-        return repository;
-    }
-
-    @Override
-    public GenericMapper<Harvest, HarvestRequestDTO, HarvestResponseDTO> getMapper() {
-        return mapper;
+    public HarvestServiceImpl(HarvestRepository repository, HarvestMapper mapper, ApplicationEventPublisher eventPublisher) {
+        super(repository, mapper);
+        this.repository = repository;
+        this.mapper = mapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override

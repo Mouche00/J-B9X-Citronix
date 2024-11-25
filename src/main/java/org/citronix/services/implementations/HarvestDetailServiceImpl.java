@@ -9,8 +9,10 @@ import org.citronix.dtos.response.TreeResponseDTO;
 import org.citronix.events.HarvestStartedEvent;
 import org.citronix.models.HarvestDetail;
 import org.citronix.repositories.HarvestDetailRepository;
+import org.citronix.repositories.HarvestDetailRepository;
 import org.citronix.services.HarvestDetailService;
 import org.citronix.utils.constants.TreeProductivity;
+import org.citronix.utils.mappers.HarvestDetailMapper;
 import org.citronix.utils.mappers.GenericMapper;
 import org.citronix.utils.mappers.HarvestDetailMapper;
 import org.springframework.context.event.EventListener;
@@ -23,19 +25,14 @@ import java.util.UUID;
 @Slf4j
 @Transactional
 @Service
-@RequiredArgsConstructor
-public class HarvestDetailServiceImpl implements HarvestDetailService {
+public class HarvestDetailServiceImpl extends GenericServiceImpl<HarvestDetail, HarvestDetailRequestDTO, HarvestDetailResponseDTO> implements HarvestDetailService {
     private final HarvestDetailRepository repository;
     private final HarvestDetailMapper mapper;
 
-    @Override
-    public JpaRepository<HarvestDetail, UUID> getRepository() {
-        return repository;
-    }
-
-    @Override
-    public GenericMapper<HarvestDetail, HarvestDetailRequestDTO, HarvestDetailResponseDTO> getMapper() {
-        return mapper;
+    public HarvestDetailServiceImpl(HarvestDetailRepository repository, HarvestDetailMapper mapper) {
+        super(repository, mapper);
+        this.repository = repository;
+        this.mapper = mapper;
     }
 
     @EventListener(condition = "#harvestStartedEvent.trees != null or !#harvestStartedEvent.trees.isEmpty()")

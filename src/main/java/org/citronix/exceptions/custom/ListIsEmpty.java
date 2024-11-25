@@ -7,4 +7,7 @@ public class ListIsEmpty extends RuntimeException {
     public ListIsEmpty(String entityName) {
         super(entityName + "s" + " liat is empty");
     }
+    public ListIsEmpty() {
+        super("List is empty");
+    }
 }
