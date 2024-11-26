@@ -5,18 +5,17 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Set;
+import java.util.UUID;
 
-@Builder
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "farms")
-public class Farm {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+public class Farm extends BaseEntity {
 
     @NotBlank
     private String name;
@@ -35,6 +34,6 @@ public class Farm {
         this.createdAt = LocalDate.now();
     }
 
-    @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Field> fields = new ArrayList<>();
+    @OneToMany(mappedBy = "farm")
+    private Set<Field> fields;
 }

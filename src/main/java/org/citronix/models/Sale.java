@@ -6,20 +6,15 @@ import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 
-@Builder
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "sales")
-public class Sale {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+public class Sale extends BaseEntity {
     @Positive
     private double unitPrice;
 

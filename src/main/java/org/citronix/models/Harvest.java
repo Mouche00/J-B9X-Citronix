@@ -4,23 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
-import org.citronix.utils.constants.Season;
+import org.citronix.utils.enums.Season;
 
 import java.time.Year;
-import java.util.*;
+import java.util.Set;
 
-@Builder
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "harvests")
-public class Harvest {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
+public class Harvest extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     private Season season;
@@ -29,17 +25,13 @@ public class Harvest {
     @NotNull
     private Year year;
 
-    @Transient
-    @With
-    private double totalQuantity;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "field_id")
     private Field field;
 
-    @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
-    private List<HarvestDetail> harvestDetails = new ArrayList<>();
+    @OneToMany(mappedBy = "harvest")
+    private Set<HarvestDetail> harvestDetails;
 
-    @OneToMany(mappedBy = "harvest", cascade = CascadeType.ALL)
-    private List<Sale> sales = new ArrayList<>();
+    @OneToMany(mappedBy = "harvest")
+    private Set<Sale> sales;
 }

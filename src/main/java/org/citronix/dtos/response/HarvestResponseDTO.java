@@ -1,16 +1,17 @@
 package org.citronix.dtos.response;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Builder;
-import org.citronix.utils.constants.Season;
+import org.citronix.utils.enums.Season;
+import org.citronix.utils.validation.OnCreate;
 
 import java.time.Year;
-import java.util.List;
 
 @Builder
 public record HarvestResponseDTO(String id,
                                  Season season,
                                  Year year,
-                                 double TotalQuantity,
-                                 FieldResponseDTO field,
-                                 List<HarvestDetailResponseDTO> harvestDetails) {
+                                 String fieldId) {
 }
