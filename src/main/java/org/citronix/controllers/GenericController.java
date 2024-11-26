@@ -6,14 +6,14 @@ import org.citronix.services.GenericService;
 import org.citronix.utils.StringUtil;
 import org.citronix.utils.response.ApiResponse;
 import org.citronix.utils.response.ResponseUtil;
-import org.citronix.utils.validation.OnCreate;
+import org.citronix.utils.validation.groups.OnCreate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 public abstract class GenericController<T, REQ, RES> {
-    protected final GenericService<T, REQ, RES> service;
+    protected GenericService<T, REQ, RES> service;
 
     protected GenericController(GenericService<T, REQ, RES> service) {
         this.service = service;

@@ -3,18 +3,23 @@ package org.citronix.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "harvest_details")
-public class HarvestDetail extends BaseEntity {
-    @NotEmpty
-    @Positive
+public class HarvestDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @PositiveOrZero
     private double quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
