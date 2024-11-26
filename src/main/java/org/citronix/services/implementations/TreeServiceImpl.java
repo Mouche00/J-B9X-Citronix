@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.citronix.dtos.request.TreeRequestDTO;
 import org.citronix.dtos.response.TreeResponseDTO;
 import org.citronix.events.HarvestStartedEvent;
+import org.citronix.events.TreeHarvestStartedEvent;
 import org.citronix.models.Tree;
 import org.citronix.repositories.TreeRepository;
 import org.citronix.services.TreeService;
@@ -54,6 +55,13 @@ public class TreeServiceImpl extends GenericServiceImpl<Tree, TreeRequestDTO, Tr
         List<Tree> trees = appendAgeAll(findAllEntitiesByFieldHarvestId(harvestId));
         harvestStartedEvent.setTrees(mapper.toDTOs(trees));
         eventPublisher.publishEvent(harvestStartedEvent);
+    }
+
+    @EventListener
+    public void handleTreeHarvestStartedEvent(TreeHarvestStartedEvent treeHarvestStartedEvent) {
+        String treeId = treeHarvestStartedEvent.getTreeId();
+        Tree tree = findEntityById(treeId);
+        if(tree != null) treeHarvestStartedEvent.getResult().complete(tree);
     }
 
     public List<Tree> appendAgeAll(List<Tree> trees) {

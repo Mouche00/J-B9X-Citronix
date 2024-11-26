@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 
 @Builder
@@ -32,4 +33,11 @@ public class Tree {
 
     @OneToMany(mappedBy = "tree", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HarvestDetail> harvestDetails = new ArrayList<>();
+
+    public int getAge() {
+        if (plantingDate != null) {
+            return Period.between(plantingDate, LocalDate.now()).getYears();
+        }
+        return 0;
+    }
 }

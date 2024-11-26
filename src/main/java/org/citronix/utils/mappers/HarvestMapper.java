@@ -12,7 +12,7 @@ public interface HarvestMapper extends GenericMapper<Harvest, HarvestRequestDTO,
     @Mapping(source = "fieldId", target = "field.id")
     Harvest toEntity(HarvestRequestDTO req);
 
-    default Season mapStatus(String season) {
+    default Season mapSeason(String season) {
         return season != null ? Season.valueOf(season.toUpperCase()) : null;
     }
 }

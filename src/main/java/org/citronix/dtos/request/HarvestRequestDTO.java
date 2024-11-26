@@ -10,6 +10,7 @@ import org.citronix.utils.validation.groups.OnCreate;
 import org.citronix.utils.validation.annotations.ValidEnum;
 
 import java.time.Year;
+import java.util.List;
 
 @Builder
 public record HarvestRequestDTO(@NotNull(groups = OnCreate.class)
@@ -21,5 +22,7 @@ public record HarvestRequestDTO(@NotNull(groups = OnCreate.class)
                                 Year year,
 
                                 @NotBlank(groups = OnCreate.class)
-                                String fieldId) {
+                                String fieldId,
+
+                                List<HarvestDetailRequestDTO> harvestDetails) {
 }

@@ -5,11 +5,7 @@ import lombok.Builder;
 import org.citronix.utils.validation.groups.OnCreate;
 
 @Builder
-public record HarvestDetailRequestDTO(@NotNull(groups = OnCreate.class)
-                                      @PositiveOrZero
-                                      Double quantity,
-
-                                      @NotBlank(groups = OnCreate.class)
+public record HarvestDetailRequestDTO(@NotBlank(groups = OnCreate.class)
                                       String treeId,
 
                                       @NotBlank(groups = OnCreate.class)

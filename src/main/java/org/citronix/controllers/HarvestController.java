@@ -5,6 +5,7 @@ import org.citronix.dtos.request.HarvestRequestDTO;
 import org.citronix.dtos.response.HarvestDetailResponseDTO;
 import org.citronix.dtos.response.HarvestResponseDTO;
 import org.citronix.models.Harvest;
+import org.citronix.models.HarvestDetail;
 import org.citronix.services.HarvestService;
 import org.citronix.utils.StringUtil;
 import org.citronix.utils.response.ApiResponse;
@@ -26,8 +27,8 @@ public class HarvestController extends GenericController<Harvest, HarvestRequest
     }
 
     @PostMapping("/{id}/start")
-    public ResponseEntity<ApiResponse<List<HarvestDetailResponseDTO>>> startHarvest(@PathVariable String id, HttpServletRequest request) throws ExecutionException, InterruptedException {
-        List<HarvestDetailResponseDTO> result = service.startHarvest(id);
+    public ResponseEntity<ApiResponse<HarvestResponseDTO>> startHarvest(@PathVariable String id, HttpServletRequest request) {
+        HarvestResponseDTO result = service.startHarvestCalc(id);
         return ResponseEntity.ok(ResponseUtil.success(result, "Harvest started successfully", request.getRequestURI()));
     }
 }
