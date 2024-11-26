@@ -10,6 +10,4 @@ import org.mapstruct.Mapping;
 public interface TreeMapper extends GenericMapper<Tree, TreeRequestDTO, TreeResponseDTO>{
     @Mapping(source = "fieldId", target = "field.id")
     Tree toEntity(TreeRequestDTO req);
-    @Mapping(source = "field", target = "field")
-    TreeResponseDTO toDTO(Tree entity);
 }

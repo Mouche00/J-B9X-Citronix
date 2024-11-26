@@ -1,5 +1,6 @@
 package org.citronix.services.implementations;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.citronix.dtos.request.FarmRequestDTO;
 import org.citronix.dtos.response.FarmResponseDTO;
@@ -14,19 +15,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Transactional
 @Service
-@RequiredArgsConstructor
-public class FarmServiceImpl implements FarmService {
+public class FarmServiceImpl extends GenericServiceImpl<Farm, FarmRequestDTO, FarmResponseDTO> implements FarmService {
     private final FarmRepository repository;
     private final FarmMapper mapper;
 
-    @Override
-    public JpaRepository<Farm, UUID> getRepository() {
-        return repository;
-    }
-
-    @Override
-    public GenericMapper<Farm, FarmRequestDTO, FarmResponseDTO> getMapper() {
-        return mapper;
+    public FarmServiceImpl(FarmRepository repository, FarmMapper mapper) {
+        super(repository, mapper);
+        this.repository = repository;
+        this.mapper = mapper;
     }
 }

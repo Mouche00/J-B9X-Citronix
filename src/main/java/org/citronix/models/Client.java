@@ -1,25 +1,29 @@
 package org.citronix.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "clients")
-public class Client extends BaseEntity {
+public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
     @NotBlank
     private String cin;
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "client")
-    private Set<Sale> sales;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Sale> sales = new HashSet<>();
 }

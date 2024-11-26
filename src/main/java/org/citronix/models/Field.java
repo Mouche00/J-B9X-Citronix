@@ -5,17 +5,19 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-
-@EqualsAndHashCode(callSuper = true)
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "fields")
-public class Field extends BaseEntity {
+public class Field {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @DecimalMin(value = "0.1")
     private double surfaceArea;
@@ -24,9 +26,9 @@ public class Field extends BaseEntity {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @OneToMany(mappedBy = "field")
-    private Set<Tree> trees;
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tree> trees = new ArrayList<>();
 
-    @OneToMany(mappedBy = "field")
-    private Set<Harvest> harvests;
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Harvest> harvests = new ArrayList<>();
 }
