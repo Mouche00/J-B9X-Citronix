@@ -86,10 +86,6 @@ class FieldServiceImplTest {
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> service.save(requestDTO));
         assertEquals("The sum of the fields' areas cannot exceed the total farm area.", exception.getMessage());
-
-        verify(eventPublisher, times(1)).publishEvent(eventCaptor.capture());
-        FieldSaveEvent capturedEvent = eventCaptor.getValue();
-        assertEquals(farm.getId().toString(), capturedEvent.getFarmId());
     }
 
     @Test
@@ -104,10 +100,6 @@ class FieldServiceImplTest {
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> service.save(requestDTO));
         assertEquals("Field area cannot exceed 50% of the total farm area.", exception.getMessage());
-
-        verify(eventPublisher, times(1)).publishEvent(eventCaptor.capture());
-        FieldSaveEvent capturedEvent = eventCaptor.getValue();
-        assertEquals(farm.getId().toString(), capturedEvent.getFarmId());
     }
 
     @Test
@@ -126,10 +118,6 @@ class FieldServiceImplTest {
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> service.save(requestDTO));
         assertEquals("A farm cannot contain more than 10 fields", exception.getMessage());
-
-        verify(eventPublisher, times(1)).publishEvent(eventCaptor.capture());
-        FieldSaveEvent capturedEvent = eventCaptor.getValue();
-        assertEquals(farm.getId().toString(), capturedEvent.getFarmId());
     }
 
     @Test

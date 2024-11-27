@@ -12,10 +12,14 @@ import org.citronix.services.GenericService;
 import org.citronix.utils.mappers.FarmMapper;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static org.citronix.repositories.FarmRepository.Specs.withCriteria;
 
 @Transactional
 @Service
@@ -33,5 +37,11 @@ public class FarmServiceImpl extends GenericServiceImpl<Farm, FarmRequestDTO, Fa
     public void handleFieldSaveEvent(FieldSaveEvent fieldSaveEvent) {
         Farm farm = findEntityById(fieldSaveEvent.getFarmId());
         if(farm != null) fieldSaveEvent.getResult().complete(farm);
+    }
+
+    @Override
+    public Page<FarmResponseDTO> searchFarms(String name, String location, Pageable pageable) {
+        Page<Farm> farms = repository.findAll(withCriteria(name, location), pageable);
+        return farms.map(mapper::toDTO);
     }
 }
