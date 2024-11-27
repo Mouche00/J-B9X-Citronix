@@ -7,14 +7,17 @@ import org.citronix.dtos.request.HarvestDetailRequestDTO;
 import org.citronix.dtos.request.HarvestRequestDTO;
 import org.citronix.dtos.response.HarvestDetailResponseDTO;
 import org.citronix.dtos.response.HarvestResponseDTO;
+import org.citronix.events.HarvestDetailSaveEvent;
 import org.citronix.events.HarvestStartedEvent;
 import org.citronix.models.Harvest;
 import org.citronix.models.HarvestDetail;
 import org.citronix.repositories.HarvestRepository;
 import org.citronix.services.HarvestService;
+import org.citronix.utils.constants.Season;
 import org.citronix.utils.mappers.HarvestMapper;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,28 @@ public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestReque
     }
 
     @Override
+    public HarvestResponseDTO save(HarvestRequestDTO req) {
+        Harvest entity = mapper.toEntity(req);
+        validateHarvestConstraints(entity, entity.getField().getId().toString());
+
+        entity = repository.save(entity);
+        return findById(entity.getId().toString());
+    }
+
+    @Override
+    public HarvestResponseDTO update(String id, HarvestRequestDTO entity) {
+        return findAndExecute(id, (foundEntity) -> {
+            validateHarvestConstraints(mapper.toEntity(entity), foundEntity.getField().getId().toString());
+            return updateExistingEntity(entity, foundEntity);
+        });
+    }
+    public void validateHarvestConstraints(Harvest harvest, String fieldId) {
+        if(repository.existsByFieldAndSeason(UUID.fromString(fieldId), harvest.getSeason())) {
+            throw new IllegalArgumentException("A harvest already exists for this field in this season");
+        }
+    }
+
+    @Override
     public HarvestResponseDTO startHarvestCalc(String id) {
         findById(id);
         CompletableFuture<List<HarvestDetail>> result = new CompletableFuture<>();
@@ -52,6 +77,12 @@ public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestReque
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @EventListener
+    public void handleHarvestDetailSaveEvent(HarvestDetailSaveEvent harvestDetailSaveEvent) {
+        Boolean harvestExists = repository.existsByTree(UUID.fromString(harvestDetailSaveEvent.getHarvestId()), UUID.fromString(harvestDetailSaveEvent.getTreeId()));
+        if(harvestExists != null) harvestDetailSaveEvent.getResult().complete(harvestExists);
     }
 
     @Override

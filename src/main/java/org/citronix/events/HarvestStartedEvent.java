@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class HarvestStartedEvent extends GenericEvent<List<HarvestDetail>> {
     private final String harvestId;
-    private List<TreeResponseDTO> trees = new ArrayList<>();
+    private List<TreeResponseDTO> trees;
 
     public HarvestStartedEvent(Object source, String harvestId) {
         super(source);

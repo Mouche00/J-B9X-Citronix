@@ -94,14 +94,6 @@ public class TreeServiceImpl extends GenericServiceImpl<Tree, TreeRequestDTO, Tr
         return executeWithUUID(harvestId, (id) -> repository.findAll(byFieldHarvestId(id)));
     }
 
-    @EventListener(condition = "#harvestStartedEvent.trees == null or #harvestStartedEvent.trees.isEmpty()")
-    public void handleHarvestStartedEvent(HarvestStartedEvent harvestStartedEvent) {
-        String harvestId = harvestStartedEvent.getHarvestId();
-        List<Tree> trees = appendAgeAll(findAllEntitiesByFieldHarvestId(harvestId));
-        harvestStartedEvent.setTrees(mapper.toDTOs(trees));
-        eventPublisher.publishEvent(harvestStartedEvent);
-    }
-
     @EventListener
     public void handleTreeHarvestStartedEvent(TreeHarvestStartedEvent treeHarvestStartedEvent) {
         String treeId = treeHarvestStartedEvent.getTreeId();
