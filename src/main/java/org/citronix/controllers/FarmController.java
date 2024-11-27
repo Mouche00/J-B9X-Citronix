@@ -30,6 +30,7 @@ public class FarmController extends GenericController<Farm, FarmRequestDTO, Farm
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
 
+        //
         Page<FarmResponseDTO> farms = service.searchFarms(name, location, PageRequest.of(page, size));
         return ResponseEntity.ok(ResponseUtil.success(farms, "Farms fetched successfully", request.getRequestURI()));
     }
