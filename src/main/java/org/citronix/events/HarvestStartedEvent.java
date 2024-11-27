@@ -17,14 +17,12 @@ import java.util.concurrent.CompletableFuture;
 
 @Setter
 @Getter
-public class HarvestStartedEvent extends ApplicationEvent {
+public class HarvestStartedEvent extends GenericEvent<List<HarvestDetail>> {
     private final String harvestId;
     private List<TreeResponseDTO> trees = new ArrayList<>();
-    private final CompletableFuture<List<HarvestDetail>> result;
 
-    public HarvestStartedEvent(Object source, String harvestId, CompletableFuture<List<HarvestDetail>> result) {
+    public HarvestStartedEvent(Object source, String harvestId) {
         super(source);
         this.harvestId = harvestId;
-        this.result = result;
     }
 }

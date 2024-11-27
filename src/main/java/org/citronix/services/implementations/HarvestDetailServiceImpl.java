@@ -78,10 +78,11 @@ public class HarvestDetailServiceImpl extends GenericServiceImpl<HarvestDetail, 
     }
 
     public int getTreeAge(String treeId) {
-        CompletableFuture<Tree> result = new CompletableFuture<>();
-        eventPublisher.publishEvent(new TreeHarvestStartedEvent(this, treeId, result));
+//        CompletableFuture<Tree> result = new CompletableFuture<>();
+        TreeHarvestStartedEvent event = new TreeHarvestStartedEvent(this, treeId);
+        eventPublisher.publishEvent(event);
         try {
-            Tree tree = result.get();
+            Tree tree = event.getResult().get();
             return tree.getAge();
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException("Error getting tree age " + e);
