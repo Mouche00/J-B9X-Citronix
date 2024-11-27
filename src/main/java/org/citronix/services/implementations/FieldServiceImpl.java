@@ -46,8 +46,8 @@ public class FieldServiceImpl extends GenericServiceImpl<Field, FieldRequestDTO,
         Field entity = mapper.toEntity(req);
         validateFieldConstraints(entity, entity.getFarm().getId().toString());
 
-        entity = repository.save(entity);
-        return findById(entity.getId().toString());
+//        entity = repository.save(entity);
+        return mapper.toDTO(repository.save(entity));
     }
 
     @Override
