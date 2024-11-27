@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "farms")
-public class Farm {
+public class Farm implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

@@ -13,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "fields")
-public class Field {
+public class Field implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

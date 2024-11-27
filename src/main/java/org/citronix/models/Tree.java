@@ -15,7 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "trees")
-public class Tree {
+public class Tree implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
