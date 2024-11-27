@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Builder
 @Data
@@ -15,15 +13,13 @@ import java.util.UUID;
 @Entity
 @Table(name = "clients")
 public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
 
+    @Id
     @NotBlank
     private String cin;
     @NotBlank
     private String name;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Sale> sales = new HashSet<>();
+    private List<Sale> sales = new ArrayList<>();
 }

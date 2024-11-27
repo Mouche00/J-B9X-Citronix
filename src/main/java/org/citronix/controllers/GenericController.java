@@ -2,6 +2,7 @@ package org.citronix.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.citronix.models.Identifiable;
 import org.citronix.services.GenericService;
 import org.citronix.utils.StringUtil;
 import org.citronix.utils.response.ApiResponse;
@@ -12,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-public abstract class GenericController<T, REQ, RES> {
+public abstract class GenericController<T extends Identifiable, REQ, RES> {
     protected GenericService<T, REQ, RES> service;
 
     protected GenericController(GenericService<T, REQ, RES> service) {
@@ -32,7 +33,7 @@ public abstract class GenericController<T, REQ, RES> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RES>> getById(@PathVariable String id, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<RES>> findById(@PathVariable String id, HttpServletRequest request) {
         RES entity = service.findById(id);
         return ResponseEntity.ok(ResponseUtil.success(entity, StringUtil.extractBaseName(entity.getClass().getSimpleName()) + " fetched successfully", request.getRequestURI()));
     }

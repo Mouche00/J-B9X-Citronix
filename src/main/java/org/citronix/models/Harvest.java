@@ -15,7 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "harvests")
-public class Harvest {
+public class Harvest implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

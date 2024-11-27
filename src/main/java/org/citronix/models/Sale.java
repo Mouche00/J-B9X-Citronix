@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "sales")
-public class Sale {
+public class Sale implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
