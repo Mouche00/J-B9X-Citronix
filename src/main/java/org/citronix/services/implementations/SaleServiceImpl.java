@@ -2,7 +2,9 @@ package org.citronix.services.implementations;
 
 import jakarta.transaction.Transactional;
 import org.citronix.dtos.request.SaleRequestDTO;
+import org.citronix.dtos.response.RevenueDTO;
 import org.citronix.dtos.response.SaleResponseDTO;
+import org.citronix.events.RevenueCalcStartedEvent;
 import org.citronix.events.SaleSaveEvent;
 import org.citronix.models.Client;
 import org.citronix.models.Sale;
@@ -12,6 +14,7 @@ import org.citronix.services.SaleService;
 import org.citronix.utils.mappers.GenericMapper;
 import org.citronix.utils.mappers.SaleMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +78,18 @@ public class SaleServiceImpl extends GenericServiceImpl<Sale, SaleRequestDTO, Sa
 
     public List<Sale> getSalesByHarvestId(String harvestId) {
         return executeWithUUID(harvestId, repository::findByHarvestId);
+    }
+
+    @EventListener
+    public void handleRevenueCalcStartedEvent(RevenueCalcStartedEvent revenueCalcStartedEvent) {
+        String farmId = revenueCalcStartedEvent.getFarmId();
+        List<Sale> sales = repository.findByFarmId(UUID.fromString(farmId));
+        double totalRevenue = getTotalRevenue(sales);
+        RevenueDTO revenueDTO = RevenueDTO.builder()
+                .totalRevenue(totalRevenue)
+                .sales(mapper.toDTOs(sales))
+                .build();
+
+        if(revenueDTO != null) revenueCalcStartedEvent.getResult().complete(revenueDTO);
     }
 }
