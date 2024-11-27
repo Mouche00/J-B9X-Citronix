@@ -43,11 +43,12 @@ public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestReque
     public HarvestResponseDTO startHarvestCalc(String id) {
         findById(id);
         CompletableFuture<List<HarvestDetail>> result = new CompletableFuture<>();
-        eventPublisher.publishEvent(new HarvestStartedEvent(this, id, result));
+        HarvestStartedEvent event = new HarvestStartedEvent(this, id);
+        eventPublisher.publishEvent(event);
         try {
-            log.info("Event: " + result);
-            log.info("Result is: " + result.get());
-            return saveHarvestCalc(id, result.get());
+//            log.info("Event: " + result);
+//            log.info("Result is: " + result.get());
+            return saveHarvestCalc(id, event.getResult().get());
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
