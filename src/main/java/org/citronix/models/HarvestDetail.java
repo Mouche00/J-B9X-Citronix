@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "harvest_details")
-public class HarvestDetail {
+public class HarvestDetail implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

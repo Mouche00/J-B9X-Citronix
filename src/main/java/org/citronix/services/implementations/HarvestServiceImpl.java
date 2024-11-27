@@ -41,6 +41,7 @@ public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestReque
 
     @Override
     public HarvestResponseDTO startHarvestCalc(String id) {
+        findById(id);
         CompletableFuture<List<HarvestDetail>> result = new CompletableFuture<>();
         eventPublisher.publishEvent(new HarvestStartedEvent(this, id, result));
         try {

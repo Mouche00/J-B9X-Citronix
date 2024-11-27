@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.citronix.exceptions.custom.EntityNotFound;
 import org.citronix.exceptions.custom.ListIsEmpty;
+import org.citronix.models.Identifiable;
 import org.citronix.services.GenericService;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,15 +17,15 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public abstract class GenericServiceImpl<T, REQ, RES> implements GenericService<T, REQ, RES> {
+public abstract class GenericServiceImpl<T extends Identifiable, REQ, RES> implements GenericService<T, REQ, RES> {
     private final JpaRepository<T, UUID> repository;
     private final GenericMapper<T, REQ, RES> mapper;
 
     @Override
-    public RES save(REQ entity) {
-        return mapper.toDTO(
-                repository.save(
-                        mapper.toEntity(entity)));
+    public RES save(REQ req) {
+        T entity = repository.save(
+                mapper.toEntity(req));
+        return findById(entity.getId().toString());
     }
 
     @Override
