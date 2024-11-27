@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Builder;
+import org.citronix.models.Field;
+import org.citronix.utils.validation.annotations.Exists;
 import org.citronix.utils.validation.groups.OnCreate;
 
 import java.time.LocalDate;
@@ -14,5 +16,6 @@ public record TreeRequestDTO(@PastOrPresent
                              LocalDate plantingDate,
 
                              @NotBlank(groups = OnCreate.class)
+                             @Exists(entity = Field.class, groups = OnCreate.class)
                              String fieldId) {
 }

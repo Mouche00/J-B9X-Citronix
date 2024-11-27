@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.citronix.dtos.request.FieldRequestDTO;
 import org.citronix.dtos.response.FieldResponseDTO;
 import org.citronix.events.FieldSaveEvent;
+import org.citronix.events.TreeSaveEvent;
 import org.citronix.exceptions.custom.ConstraintFailed;
 import org.citronix.models.Farm;
 import org.citronix.models.Field;
@@ -15,6 +16,7 @@ import org.citronix.utils.mappers.FieldMapper;
 import org.citronix.utils.mappers.FieldMapper;
 import org.citronix.utils.mappers.GenericMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +79,11 @@ public class FieldServiceImpl extends GenericServiceImpl<Field, FieldRequestDTO,
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @EventListener
+    public void handleTreeSaveEvent(TreeSaveEvent treeSaveEvent) {
+        Field field = findEntityById(treeSaveEvent.getFieldId());
+        if(field != null) treeSaveEvent.getResult().complete(field);
     }
 }
