@@ -3,6 +3,7 @@ package org.citronix.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.citronix.dtos.request.FarmRequestDTO;
 import org.citronix.dtos.response.FarmResponseDTO;
+import org.citronix.dtos.response.RevenueDTO;
 import org.citronix.models.Farm;
 import org.citronix.services.FarmService;
 import org.citronix.utils.response.ApiResponse;
@@ -30,8 +31,14 @@ public class FarmController extends GenericController<Farm, FarmRequestDTO, Farm
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
 
-        //
         Page<FarmResponseDTO> farms = service.searchFarms(name, location, PageRequest.of(page, size));
         return ResponseEntity.ok(ResponseUtil.success(farms, "Farms fetched successfully", request.getRequestURI()));
+    }
+
+    @GetMapping("/{farmId}/revenue")
+    public ResponseEntity<ApiResponse<RevenueDTO>> searchFarms(@PathVariable String farmId, HttpServletRequest request) {
+
+        RevenueDTO farms = service.calculateRevenue(farmId);
+        return ResponseEntity.ok(ResponseUtil.success(farms, "Revenue fetched successfully", request.getRequestURI()));
     }
 }
