@@ -9,6 +9,7 @@ import org.citronix.dtos.response.HarvestDetailResponseDTO;
 import org.citronix.dtos.response.HarvestResponseDTO;
 import org.citronix.events.HarvestDetailSaveEvent;
 import org.citronix.events.HarvestStartedEvent;
+import org.citronix.events.SaleSaveEvent;
 import org.citronix.models.Harvest;
 import org.citronix.models.HarvestDetail;
 import org.citronix.repositories.HarvestRepository;
@@ -83,6 +84,17 @@ public class HarvestServiceImpl extends GenericServiceImpl<Harvest, HarvestReque
     public void handleHarvestDetailSaveEvent(HarvestDetailSaveEvent harvestDetailSaveEvent) {
         Boolean harvestExists = repository.existsByTree(UUID.fromString(harvestDetailSaveEvent.getHarvestId()), UUID.fromString(harvestDetailSaveEvent.getTreeId()));
         if(harvestExists != null) harvestDetailSaveEvent.getResult().complete(harvestExists);
+    }
+
+    @EventListener
+    public void handleSaleSaveEvent(SaleSaveEvent saleSaveEvent) {
+        Harvest harvest = findEntityById(saleSaveEvent.getHarvestId());
+        Double totalQuantity = calculateTotalQuantity(harvest);
+        if(totalQuantity != null) saleSaveEvent.getResult().complete(totalQuantity);
+    }
+
+    public double calculateTotalQuantity(Harvest harvest) {
+        return harvest.getHarvestDetails().stream().mapToDouble(HarvestDetail::getQuantity).sum();
     }
 
     @Override
